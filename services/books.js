@@ -29,11 +29,11 @@ function validateCreate(book) {
   }
 
   if (!book.title) {
-    messages.push('Book is empty');
+    messages.push('Title is empty');
   }
 
   if (!book.author) {
-    messages.push('Book is empty');
+    messages.push('Author is empty');
   }
 
   if (book.title && book.title.length > 255) {
@@ -56,7 +56,7 @@ async function create(book){
   validateCreate(book);
 
   const result = await db.query(
-    'INSERT INTO book(book, author) VALUES ($1, $2) RETURNING *',
+    'INSERT INTO book(title, author) VALUES ($1, $2) RETURNING *',
     [book.title, book.author]
   );
   let message = 'Error in creating book';
