@@ -11,12 +11,49 @@ async function getMultiple(page = 1) {
   const data = helper.emptyOrRows(rows);
   const meta = {page};
 
-  console.log(data);
-
   return {
     data,
     meta
   }
+}
+
+function validateRemove(id) {
+  let messages = [];
+
+  if (!id) {
+    messages.push('No id is provided');
+  }
+
+  if (messages.length) {
+    let error = new Error(messages.join());
+    error.statusCode = 400;
+
+    throw error;
+  }
+}
+
+async function remove(id) {
+  validateRemove(id);
+
+  const result = await db.query(
+    'SELECT * FROM book WHERE id=$1;',
+    [id]
+  );
+
+  await db.query(
+    'DELETE FROM book WHERE id=$1;',
+    [id]
+  );
+
+  console.log(result);
+
+  let message = `There's no book with id: ${ id }`;
+
+  if (result.length) {
+    message = 'Book removed successfully';
+  }
+
+  return { message };
 }
 
 function validateCreate(book) {
@@ -70,5 +107,6 @@ async function create(book){
 
 module.exports = {
   getMultiple,
-  create
+  create,
+  remove
 }

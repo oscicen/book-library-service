@@ -22,4 +22,14 @@ router.post('/', async function(req, res, next) {
   }
 });
 
+/* DELETE books */
+router.delete('/', async function(req, res, next) {
+  try {
+    res.json(await books.remove(req.query.id));
+  } catch (err) {
+    console.error(`Error while deleting book`, err.message);
+    next(err);
+  }
+});
+
 module.exports = router;
