@@ -32,6 +32,17 @@ function validateRemove(id) {
   }
 }
 
+async function getOne(id) {
+  validateRemove(id);
+
+  const data = await db.query(
+    'SELECT id, title, author FROM book WHERE id=$1;',
+    [id]
+  );
+
+  return { data };
+}
+
 async function remove(id) {
   validateRemove(id);
 
@@ -44,8 +55,6 @@ async function remove(id) {
     'DELETE FROM book WHERE id=$1;',
     [id]
   );
-
-  console.log(result);
 
   let message = `There's no book with id: ${ id }`;
 
@@ -107,6 +116,7 @@ async function create(book){
 
 module.exports = {
   getMultiple,
+  getOne,
   create,
   remove
 }
