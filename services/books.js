@@ -4,16 +4,26 @@ const config = require('../config');
 
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
+  const [{ count: numberOfRows }] = await db.query('SELECT COUNT(id) FROM book AS total');
   const rows = await db.query(
     'SELECT id, title, author FROM book OFFSET $1 LIMIT $2', 
     [offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
-  const meta = {page};
+  console.log(numberOfRows, config.listPerPage)
+  const pagination = {
+    current: page,
+    numberPerPage: config.listPerPage,
+    hasPrevious: +page > 1,
+    previous: +page - 1,
+    hasNext: +page < Math.ceil(numberOfRows / config.listPerPage),
+    next: +page + 1,
+    lastPage: Math.ceil(numberOfRows / config.listPerPage)
+  };
 
   return {
-    data,
-    meta
+    rows: data,
+    pagination
   }
 }
 
@@ -105,6 +115,7 @@ async function create(book){
     'INSERT INTO book(title, author) VALUES ($1, $2) RETURNING *',
     [book.title, book.author]
   );
+
   let message = 'Error in creating book';
 
   if (result.length) {

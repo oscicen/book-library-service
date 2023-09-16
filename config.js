@@ -8,7 +8,7 @@ const config = {
     password: env.DB_PASSWORD,
     database: env.DB_NAME,
   },
-  listPerPage: env.LIST_PER_PAGE || 10,
+  listPerPage: env.LIST_PER_PAGE || 6,
 };
 
 module.exports = config;
