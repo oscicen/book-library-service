@@ -1,9 +1,20 @@
 CREATE TABLE book (
-    id SERIAL PRIMARY KEY,
-    title character varying(255) NOT NULL UNIQUE,
-    author character varying(255) NOT NULL,
-    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+  id SERIAL PRIMARY KEY,
+  title character varying(255) NOT NULL UNIQUE,
+  author character varying(255) NOT NULL,
+  created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+CREATE TABLE user (
+  id SERIAL PRIMARY KEY,
+  first_name character varying(255) NOT NULL,
+  last_name character varying(255) NOT NULL,
+  email character varying(255) NOT NULL UNIQUE,
+  password character varying(255) NOT NULL,
+  token character varying(255) NOT NULL,
+  created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 INSERT INTO book (title, author) VALUES 
