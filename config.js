@@ -8,6 +8,7 @@ const config = {
     password: env.DB_PASSWORD,
     database: env.DB_NAME,
   },
+  jwtSecret: env.JWT_SECRET_KEY,
   listPerPage: env.LIST_PER_PAGE || 6,
 };
 

@@ -4,9 +4,9 @@ const config = require('../config');
 
 async function getMultiple(page = 1) {
   const offset = helper.getOffset(page, config.listPerPage);
-  const [{ count: numberOfRows }] = await db.query('SELECT COUNT(id) FROM book AS total');
+  const [{ count: numberOfRows }] = await db.query('SELECT COUNT(id) FROM books AS total');
   const rows = await db.query(
-    'SELECT id, title, author FROM book OFFSET $1 LIMIT $2', 
+    'SELECT id, title, author FROM books OFFSET $1 LIMIT $2', 
     [offset, config.listPerPage]
   );
   const data = helper.emptyOrRows(rows);
@@ -46,7 +46,7 @@ async function getOne(id) {
   validateRemove(id);
 
   const data = await db.query(
-    'SELECT id, title, author FROM book WHERE id=$1;',
+    'SELECT id, title, author FROM books WHERE id=$1;',
     [id]
   );
 
@@ -57,12 +57,12 @@ async function remove(id) {
   validateRemove(id);
 
   const result = await db.query(
-    'SELECT * FROM book WHERE id=$1;',
+    'SELECT * FROM books WHERE id=$1;',
     [id]
   );
 
   await db.query(
-    'DELETE FROM book WHERE id=$1;',
+    'DELETE FROM books WHERE id=$1;',
     [id]
   );
 
@@ -112,7 +112,7 @@ async function create(book){
   validateCreate(book);
 
   const result = await db.query(
-    'INSERT INTO book(title, author) VALUES ($1, $2) RETURNING *',
+    'INSERT INTO books(title, author) VALUES ($1, $2) RETURNING *',
     [book.title, book.author]
   );
 
