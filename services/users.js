@@ -67,10 +67,11 @@ async function create(user){
 
   const email = user.email.toLowerCase();
   const encryptedPassword = await bcrypt.hash(user.password, 10);
+  const type = user?.type || 2;
 
   const result = await db.query(
-    'INSERT INTO users(first_name, last_name, user_email, user_password) VALUES ($1, $2, $3, $4) RETURNING *',
-    [user.firstName, user.lastName, email, encryptedPassword]
+    'INSERT INTO users(first_name, last_name, user_email, user_password, user_type) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+    [user.firstName, user.lastName, email, encryptedPassword, type]
   );
 
   if (result.length) {

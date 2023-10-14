@@ -31,12 +31,13 @@ CREATE TABLE users (
   last_name character varying(255) NOT NULL,
   user_email character varying(255) NOT NULL UNIQUE,
   user_password character varying(255) NOT NULL,
+  user_type INT,
   created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
   updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
-INSERT INTO users (first_name, last_name, user_email, user_password) VALUES 
-('Ioana Anca', 'Aparaschivei', 'aancaioana@gmail.com', 'password');
+INSERT INTO users (first_name, last_name, user_email, user_password, user_type) VALUES 
+('Ioana Anca', 'Aparaschivei', 'aancaioana@gmail.com', 'password', 1);
 
 CREATE TABLE favorites (
   user_id INT REFERENCES users(id),
