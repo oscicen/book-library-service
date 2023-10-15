@@ -39,7 +39,8 @@ CREATE TABLE users (
 INSERT INTO users (first_name, last_name, user_email, user_password, user_type) VALUES 
 ('Ioana Anca', 'Aparaschivei', 'aancaioana@gmail.com', 'password', 1);
 
-CREATE TABLE favorites (
+CREATE TABLE favorite_books (
+  id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users(id),
   book_id INT REFERENCES books(id),
   PRIMARY KEY (user_id, book_id)

@@ -7,9 +7,6 @@ const config = require('../config');
 function validateCreate(user) {
   let messages = [];
 
-  console.log(user);
-  console.log('Config: ', config);
-
   if (!user) {
     messages.push('No object is provided');
   }
@@ -69,24 +66,51 @@ async function create(user){
   const encryptedPassword = await bcrypt.hash(user.password, 10);
   const type = user?.type || 2;
 
-  const result = await db.query(
+  await db.query(
     'INSERT INTO users(first_name, last_name, user_email, user_password, user_type) VALUES ($1, $2, $3, $4, $5) RETURNING *',
     [user.firstName, user.lastName, email, encryptedPassword, type]
   );
 
-  if (result.length) {
-    const token = jwt.sign(
-      { email },
-      config.jwtSecret,
-      { expiresIn: '2h' }
-    );
-
-    user.token = token;
-  }
-
   return { user };
 }
 
-module.exports = {
-  create
+async function login({ email, password }) {
+  if (!email && !password) {
+    let error = new Error('Email and Password are required.');
+    error.statusCode = 401;
+
+    throw error;
+  }
+
+  const [user] = await db.query(
+    'SELECT * FROM users WHERE user_email=$1;',
+    [email]
+  );
+
+  console.log(user);
+
+  const matchedPasswords = await bcrypt.compare(password, user.user_password);
+
+  console.log(matchedPasswords);
+
+  if (!user.length && !matchedPasswords) {
+    let error = new Error('Email or password are invalid.');
+    error.statusCode = 401;
+
+    throw error;
+  }
+
+  const token = jwt.sign(
+    { email },
+    config.jwtSecret,
+    { expiresIn: '2h' }
+  );
+
+
+  return { token };
 }
+
+module.exports = {
+  create,
+  login,
+};

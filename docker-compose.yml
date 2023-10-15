@@ -28,6 +28,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: postgres
+      JWT_SECRET_KEY: securePassword
     links:
       - db
     volumes:

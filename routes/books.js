@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const books = require('../services/books');
 
-/* GET books listing */
+// GET books listing
 router.get('/', async function(req, res, next) {
   try {
     res.json(await books.getMultiple(req.query.page));
@@ -12,7 +12,7 @@ router.get('/', async function(req, res, next) {
   }
 });
 
-/* GET book */
+// GET book
 router.get('/:id', async function(req, res, next) {
   try {
     res.json(await books.getOne(req.params.id));
@@ -22,7 +22,7 @@ router.get('/:id', async function(req, res, next) {
   }
 });
 
-/* POST books */
+// POST books
 router.post('/', async function(req, res, next) {
   try {
     res.json(await books.create(req.body));
@@ -32,7 +32,7 @@ router.post('/', async function(req, res, next) {
   }
 });
 
-/* DELETE books */
+// DELETE books
 router.delete('/', async function(req, res, next) {
   try {
     res.json(await books.remove(req.query.id));
